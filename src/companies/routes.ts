@@ -5,6 +5,7 @@ import CompanyRole from '../database/models/company_role.model';
 import customShopifySession from '../shopifyClient';
 import { getGqlIdAndSqlId } from '../utils';
 import Customer from "../database/models/customer.model";
+import { Op } from "@sequelize/core";
 const multer = require('multer');
 const router = express.Router();
 const upload = multer();
@@ -106,8 +107,19 @@ router.delete('/:id', async (req: Request, res: Response) => {
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const companies = await Company.findAndCountAll()
-        console.log(companies)
+        let filter = { where: {} };
+        if (req.query.query) {
+            filter.where = {
+                [Op.or]: [
+                    {
+                        name: { [Op.iLike]: `%${req.query.query}%` },
+                    },
+                ]
+            }
+        };
+        const companies = await Company.findAndCountAll({
+            ...filter
+        })
         res.json(companies);
     } catch (e: any) {
         console.log(e.body.errors)
