@@ -7,12 +7,17 @@ import customerSyncJob from './cronjob/customer';
 import sequelize from './database/postgres';
 
 const dotenv = require('dotenv');
+const cors = require('cors')
+const helmet = require('helmet')
+
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(cors())
+app.use(helmet())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,6 +43,9 @@ app.get('/', (req: Request, res: Response) => {
 
 app.listen(port, async () => {
   await sequelize.sync({ force: true });
+  await sequelize.query(
+    'ALTER TABLE "CompanyCustomer" ADD CONSTRAINT "CompanyCustomer_Customer_Id_Constraint" FOREIGN KEY("customer_id") REFERENCES "Customer" (id) ON DELETE CASCADE'
+);
   console.log('All models were synchronized successfully.');
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
