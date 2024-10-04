@@ -4,7 +4,7 @@ import Customer from '../database/models/customer.model';
 import { getGqlIdAndSqlId } from '../utils';
 
 const customerSyncJob = new CronJob(
-    '*/10 * * * * *', // cronTime
+    '*/20 * * * * *', // cronTime
     async function () {
         try {
             let cursor: any = null;

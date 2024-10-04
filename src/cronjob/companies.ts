@@ -96,7 +96,7 @@ const companySyncJob = new CronJob(
                         });
                         await comp.save();
                     }
-                    const confirmedComp = await Company.findByPk(id, { raw: true });                  
+                    const confirmedComp = await Company.findByPk(id, { raw: true });    
                     await checkAndInsertCompanyRole(contactRoles.nodes, confirmedComp.id)
                     await checkAndInsertCompanyContact(contacts.nodes, confirmedComp.id)
                 }
