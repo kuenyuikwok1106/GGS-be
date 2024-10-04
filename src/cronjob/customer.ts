@@ -1,6 +1,6 @@
 import { CronJob } from 'cron';
 import customShopifySession from '../shopifyClient';
-import Customer from '../database/models/customers.model';
+import Customer from '../database/models/customer.model';
 import { getGqlIdAndSqlId } from '../utils';
 
 const customerSyncJob = new CronJob(

@@ -1,10 +1,10 @@
 import { DataTypes, Model } from "@sequelize/core";
 import sequelize from '../postgres';
-import CompanyRole from "./company_roles.model";
+import Company from "./company.model";
 
-class Company extends Model { };
+class CompanyRole extends Model {};
 
-Company.init(
+CompanyRole.init(
     {
         id: {
             type: DataTypes.STRING,
@@ -15,35 +15,21 @@ Company.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        contactCount: {
-            type: DataTypes.INTEGER,
-        },
-        joinDate: {
-            type: DataTypes.STRING,
-        },
         name: {
             type: DataTypes.STRING,
+            allowNull: false
         },
         note: {
             type: DataTypes.TEXT,
-        },
-        ordersCount: {
-            type: DataTypes.INTEGER,
+    
         }
-
     },
     {
         // Other model options go here
         sequelize, // We need to pass the connection instance
         freezeTableName: true,
-
+        underscored: true,
     },
-);
+)
 
-Company.hasMany(CompanyRole);
-CompanyRole.belongsTo(Company);
-
-
-// await Company.sync({ alter: true });
-// console.log('The table for the Company model was just (re)created!');
-export default Company;
+export default CompanyRole;

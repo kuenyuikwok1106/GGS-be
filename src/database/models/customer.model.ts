@@ -60,10 +60,8 @@ Customer.init(
         // Other model options go here
         sequelize, // We need to pass the connection instance
         freezeTableName: true,
-
+        underscored: true,
     },
 );
 
-// Customer.sync({ alter: true });
-// console.log('The table for the Customer model was just (re)created!');
 export default Customer;

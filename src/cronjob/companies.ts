@@ -1,10 +1,10 @@
 import { CronJob } from 'cron';
 import customShopifySession from '../shopifyClient';
-import Company from '../database/models/companies.model';
-import CompanyRole from '../database/models/company_roles.model';
-import Customer from '../database/models/customers.model';
-import CompanyCustomer from '../database/models/companies_customers.model';
-import CompCustomerCompRole from '../database/models/companies_customers_company_roles.model';
+import Company from '../database/models/company.model';
+import CompanyRole from '../database/models/company_role.model';
+import Customer from '../database/models/customer.model';
+import CompanyCustomer from '../database/models/company_customer.model';
+import CustomerCompanyRole from '../database/models/customer_company_role.model';
 import { getGqlIdAndSqlId } from '../utils';
 
 const companySyncJob = new CronJob(
@@ -81,14 +81,13 @@ const companySyncJob = new CronJob(
                         contactRoles,
                         contacts
                     }} = company;
-                    const gidArray = gid.split('/');
-                    const id = gidArray[gidArray.length - 1];
 
+                    const [id, companyGid] = getGqlIdAndSqlId(gid)
                     let comp = await Company.findByPk(id);
                     if(!comp) {
                         comp = Company.build({
                             id: id.toString(),
-                            gid,
+                            gid: companyGid,
                             contactCount,
                             joinDate: customerSince,
                             name,
@@ -151,15 +150,15 @@ async function checkAndInsertCompanyContact(
         // veriyfy customer existance
         let [customerId, customerGid] = getGqlIdAndSqlId(customer.id)
         const existedCustomer = await checkAndInsertCustomer(customerGid, customerId);
+        // console.log(existedCustomer)
         
         // check m2m connection
         const existedConnection = await checkAndBindRelation(id, customerId, companyId);
+        // console.log({ existedConnection })
         
         // discover roles
         const { nodes: roleAssigned } = roleAssignments;
-        await checkAndBindRoleWithCustomer(roleAssigned, existedConnection.id);
-
-
+        await checkAndBindRoleWithCustomer(roleAssigned, existedCustomer.id);
     }
 }
 
@@ -264,21 +263,24 @@ async function checkAndBindRelation(connectionId: string, customerId: string, co
     return CompanyCustomer.findByPk(id, { raw: true })
 }
 
-async function checkAndBindRoleWithCustomer(roles: { id: string, role: { id: string, name: string, note: string} }[], connecitonId: string) {
+async function checkAndBindRoleWithCustomer(
+    roles: { id: string, role: { id: string, name: string, note: string} }[],
+    customerId: string,
+) {
     for( const role of roles) {
         const { id, role: companyRole } = role;
         const [relationId, ] = getGqlIdAndSqlId(id);
 
-        let builtConnection = await CompCustomerCompRole.findByPk(relationId, { raw: true });
+        let builtConnection = await CustomerCompanyRole.findByPk(relationId, { raw: true });
         if(builtConnection) continue;
         const [companyRoleId, companyRoleGid] = getGqlIdAndSqlId(companyRole.id);
-        builtConnection = CompCustomerCompRole.build({
+        builtConnection = CustomerCompanyRole.build({
             id: relationId,
             companyRoleId,
-            companyCustomerId: connecitonId,
+            customerId,
         })
         await builtConnection.save();
     }
 }
 
-export default companySyncJob
+export default companySyncJob;
