@@ -4,7 +4,7 @@ import Customer from '../database/models/customer.model';
 import { getGqlIdAndSqlId } from '../utils';
 
 const customerSyncJob = new CronJob(
-    '*/20 * * * * *', // cronTime
+    '*/10 * * * * *', // cronTime
     async function () {
         try {
             let cursor: any = null;
@@ -83,6 +83,8 @@ const customerSyncJob = new CronJob(
                     const [id, gId] = getGqlIdAndSqlId(gid);
 
                     let cust = await Customer.findByPk(id);
+        console.log('cust cron')
+
                     if(!cust) {
                         cust = Customer.build({
                             id: id.toString(),
@@ -103,13 +105,8 @@ const customerSyncJob = new CronJob(
                             imageSrc: image.src,
                         });
                         await cust.save();
-                        // console.log('new customer created');
                     }
-
-                    // console.log(addresses)
-
                 }
-
                 if(edges.length === 0) break;
                 cursor = endCursor;
             }

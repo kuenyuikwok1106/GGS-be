@@ -8,7 +8,7 @@ import CustomerCompanyRole from '../database/models/customer_company_role.model'
 import { getGqlIdAndSqlId } from '../utils';
 
 const companySyncJob = new CronJob(
-    '*/10 * * * * *', // cronTime
+    '*/20 * * * * *', // cronTime
     async function () {
         try {
             let cursor: any = null;
@@ -165,6 +165,7 @@ async function checkAndInsertCompanyContact(
 async function checkAndInsertCustomer(gqlId: string, customerId: string) {
     try {
         const customer = await Customer.findByPk(customerId, { raw: true });
+        console.log('comp cron')
         if(customer) return customer;
         const { data, extensions, headers } = await customShopifySession.request(
             `

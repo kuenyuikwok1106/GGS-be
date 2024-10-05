@@ -68,9 +68,7 @@ const createRelation = async (customerId: string, companyId: string) => {
     return { data: relation }
 }
 
-export async function companyRelatedCustomerAction(resource: any, customerId: string) {
-    const { company } = resource;
-
+export async function companyRelatedCustomerAction(company: any, customerId: string) {
     // delete company connection
     if (company || company === '') {
         const existing = await CompanyCustomer.findOne({

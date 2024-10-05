@@ -1,6 +1,6 @@
 import CustomerCompanyRole from "../database/models/customer_company_role.model";
 
-export default async function roleRelatedCustomerAction(roleArray: [], customerId: string) {
+export default async function roleRelatedCustomerAction(roleArray: string[], customerId: string) {
     try {
         console.log({roleArray})
         const existing = await CustomerCompanyRole.findAll({
