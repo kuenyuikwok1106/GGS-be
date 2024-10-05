@@ -105,7 +105,6 @@ const companySyncJob = new CronJob(
                 cursor = endCursor;
             }
         } catch(e: any) {
-            // const error = e.body.errors;
             console.log(e)
         }
     },
@@ -150,11 +149,9 @@ async function checkAndInsertCompanyContact(
         // veriyfy customer existance
         let [customerId, customerGid] = getGqlIdAndSqlId(customer.id)
         const existedCustomer = await checkAndInsertCustomer(customerGid, customerId);
-        // console.log(existedCustomer)
         
         // check m2m connection
         const existedConnection = await checkAndBindRelation(id, customerId, companyId);
-        // console.log({ existedConnection })
         
         // discover roles
         const { nodes: roleAssigned } = roleAssignments;
@@ -165,7 +162,6 @@ async function checkAndInsertCompanyContact(
 async function checkAndInsertCustomer(gqlId: string, customerId: string) {
     try {
         const customer = await Customer.findByPk(customerId, { raw: true });
-        console.log('comp cron')
         if(customer) return customer;
         const { data, extensions, headers } = await customShopifySession.request(
             `

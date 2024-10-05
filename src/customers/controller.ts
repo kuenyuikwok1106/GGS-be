@@ -1,10 +1,6 @@
 import { ValidationError } from "@sequelize/core";
 import { Request, Response } from "express";
-import Customer from "../database/models/customer.model";
-import customShopifySession from '../shopifyClient';
-import { getGqlIdAndSqlId, validatePhoneNumber } from "../utils";
-import { companyRelatedCustomerAction } from "./companyRelatedCustomerAction";
-import roleRelatedCustomerAction from "./roleRelatedCustomerAction";
+import { validatePhoneNumber } from "../utils";
 import CustomersService from "./service";
 
 
@@ -22,7 +18,7 @@ export default class CustomersContoller {
             const customers = await this._customersService.findAllCustomers(queryString)
             res.status(200).json(customers);
         } catch (e: any) {
-            console.log(e instanceof ValidationError)
+            res.status(404).json(e.message)
         }
     };
 
@@ -95,7 +91,7 @@ export default class CustomersContoller {
             }
             res.status(200).json({ data: result })
         } catch (e: any) {
-            console.log(e)
+            res.status(404).json(e.message)
         }
     };
 

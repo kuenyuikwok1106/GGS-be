@@ -5,6 +5,7 @@ import CustomersRouter from './customers/routes';
 import companySyncJob from './cronjob/companies';
 import customerSyncJob from './cronjob/customer';
 import sequelize from './database/postgres';
+import logger from './winston.config';
 
 const dotenv = require('dotenv');
 const cors = require('cors')
@@ -30,10 +31,9 @@ app.use('/api/v1', v1Router);
 app.get('/health-check', async (req: Request, res: Response) => {
   try {
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
     res.status(200).json('connection success')
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    logger.error('Unable to connect to the database:', error);
   }
 });
 
@@ -46,8 +46,8 @@ app.listen(port, async () => {
   await sequelize.query(
     'ALTER TABLE "CompanyCustomer" ADD CONSTRAINT "CompanyCustomer_Customer_Id_Constraint" FOREIGN KEY("customer_id") REFERENCES "Customer" (id) ON DELETE CASCADE'
 );
-  console.log('All models were synchronized successfully.');
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  logger.info('All models were synchronized successfully.');
+  logger.info(`[server]: Server is running at http://localhost:${port}`);
 });
 
 customerSyncJob.start();

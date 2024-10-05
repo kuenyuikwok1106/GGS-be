@@ -83,8 +83,6 @@ const customerSyncJob = new CronJob(
                     const [id, gId] = getGqlIdAndSqlId(gid);
 
                     let cust = await Customer.findByPk(id);
-        console.log('cust cron')
-
                     if(!cust) {
                         cust = Customer.build({
                             id: id.toString(),
@@ -111,7 +109,6 @@ const customerSyncJob = new CronJob(
                 cursor = endCursor;
             }
         } catch(e: any) {
-            // const error = e.body.errors;
             console.log(e)
         }
     },

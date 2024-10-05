@@ -50,7 +50,8 @@ export default class CustomersService {
                 ...filter
             });
         } catch (e: any) {
-            console.log(e)
+            this._logger.error(e.message)
+            throw new Error(e.message)
         }
     }
 

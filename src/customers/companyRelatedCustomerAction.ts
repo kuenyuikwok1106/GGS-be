@@ -20,7 +20,6 @@ const deleteRelation = async (relationId: string, customerId: string) => {
         }
     );
     if (data.companyContactDelete.userErrors.length) {
-        console.log(data.companyContactDelete.userErrors)
         return { errors: data.companyContactDelete.userErrors };
     }
 
@@ -53,7 +52,6 @@ const createRelation = async (customerId: string, companyId: string) => {
         }
     );
     if (data.companyAssignCustomerAsContact.userErrors.length) {
-        console.log(data.companyAssignCustomerAsContact.userErrors)
         return ({
             errors: data.customerUpdate.userErrors
         })
