@@ -11,8 +11,6 @@ import roleRelatedCustomerAction from "./roleRelatedCustomerAction";
 export default class CustomersService {
     private _logger = logger;
 
-    // constructor
-
     async findAllCustomers(queryString: string | null) {
         try {
             let filter = { where: {} };
@@ -182,7 +180,6 @@ export default class CustomersService {
         }
     }
 
-
     async updateCustomerInfo(updateBody: any, customerId: string) {
         try {
             const { data, extensions, headers } = await customShopifySession.request(`
@@ -217,5 +214,4 @@ export default class CustomersService {
             throw new Error(e.message)
         }
     }
-
 }

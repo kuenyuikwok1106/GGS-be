@@ -57,10 +57,8 @@ export default class CustomersContoller {
             } = req.body;
 
             let result;
-
             if (company || company === '') {
                 result = await this._customersService.updateCustomerCompany(company, id)
-                res.status(200).json({ data: result });
             } else if (role || role === '') {
                 let roleArray = role;
                 if (role === '') roleArray = [];
