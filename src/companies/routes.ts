@@ -1,11 +1,4 @@
-import express, { Request, Response } from "express";
-import Company from '../database/models/company.model';
-import CompanyCustomer from '../database/models/company_customer.model';
-import CompanyRole from '../database/models/company_role.model';
-import customShopifySession from '../shopifyClient';
-import { getGqlIdAndSqlId } from '../utils';
-import Customer from "../database/models/customer.model";
-import { Op } from "@sequelize/core";
+import express from "express";
 import CompaniesContoller from "./controller";
 import CompaniesService from "./service";
 const multer = require('multer');

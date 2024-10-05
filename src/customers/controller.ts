@@ -1,4 +1,3 @@
-import { ValidationError } from "@sequelize/core";
 import { Request, Response } from "express";
 import { validatePhoneNumber } from "../utils";
 import CustomersService from "./service";

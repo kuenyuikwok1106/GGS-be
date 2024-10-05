@@ -1,14 +1,4 @@
-import express, { Request, Response } from "express";
-import Company from '../database/models/company.model';
-import Customer from "../database/models/customer.model";
-import customShopifySession from '../shopifyClient';
-import { getGqlIdAndSqlId, validatePhoneNumber } from '../utils';
-import CompanyRole from "../database/models/company_role.model";
-import CustomerCompanyRole from "../database/models/customer_company_role.model";
-import { companyRelatedCustomerAction } from "./companyRelatedCustomerAction";
-import roleRelatedCustomerAction from "./roleRelatedCustomerAction";
-import { Op, ValidationError } from "@sequelize/core";
-import logger from "../winston.config";
+import express from "express";
 import CustomersContoller from "./controller";
 import CustomersService from "./service";
 

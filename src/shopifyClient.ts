@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const shopify = shopifyApi({
-  // The next 4 values are typically read from environment variables for added security
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET_KEY || '',
   scopes: process.env.SHOPIFY_API_ADMIN_ACCESS_TOKEN?.split(". "),

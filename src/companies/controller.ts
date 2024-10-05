@@ -1,10 +1,4 @@
-import { Op } from "@sequelize/core";
 import { Request, Response } from "express";
-import Company from "../database/models/company.model";
-import CompanyRole from "../database/models/company_role.model";
-import Customer from "../database/models/customer.model";
-import customShopifySession from '../shopifyClient';
-import { getGqlIdAndSqlId } from "../utils";
 import CompaniesService from "./service";
 
 
